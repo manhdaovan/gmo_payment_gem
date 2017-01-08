@@ -1,7 +1,8 @@
 class GmoPayment::Logger
   class << self
     def write(msg)
-      File.open(GmoPayment::Configurations::CONFIGURATIONS[:log_path], 'a+') do |f|
+      log_path = GmoPayment::Configurations.all.fetch(:log_path)
+      File.open(log_path, 'a+') do |f|
         f.write("#{Time.now} :: #{msg} \n")
       end
     end

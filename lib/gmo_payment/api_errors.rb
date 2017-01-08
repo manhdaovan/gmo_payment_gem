@@ -1,7 +1,8 @@
-# require 'configurations'
-
 class GmoPayment::ApiErrors
-  ERRORS        = {
+  class << self
+    attr_reader :errors
+  end
+  @errors = {
     # 本サービス決済センター・フロント側アプリケーションにて検知されたエラー
     # カード決済時発生エラー、決済手段共通エラー (入力パラメータエラー等)
     'E00000000' => '特になし',
@@ -1331,9 +1332,11 @@ class GmoPayment::ApiErrors
     'NC2000005' => '利用停止チェックエラー',
     'NC2000006' => '紐づく取引が存在しない(購入情報出力)',
     'NC2000007' => '紐づく取引が存在しない(決済結果通知)'
-  }
+  }.freeze
 
-  # Add more/overwrite error keys and messages from config
-  custom_errors = GmoPayment::Configurations::CONFIGURATIONS[:custom_errors] || {}
-  custom_errors.each { |error_key, message| ERRORS[error_key] = message }
+  def self.all
+    # Add more/overwrite error keys and messages from config
+    custom_errors = GmoPayment::Configurations.all.fetch(:custom_errors, {})
+    @errors.merge(custom_errors)
+  end
 end

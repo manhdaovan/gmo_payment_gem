@@ -1,28 +1,28 @@
 class GmoPayment::ApiUrls
+  def self.all
+    base_payment_url = GmoPayment::Configurations.all.fetch(:base_url, nil)
+    urls = {
+      # Transaction API URL
+      'TRANSACTION_REGISTER'     => "#{base_payment_url}/EntryTran.idPass",
+      'TRANSACTION_SUBMIT'       => "#{base_payment_url}/ExecTran.idPass",
+      'TRANSACTION_UPDATE'       => "#{base_payment_url}/AlterTran.idPass",
+      'TRANSACTION_MONEY_CHANGE' => "#{base_payment_url}/ChangeTran.idPass",
+      'TRANSACTION_SEARCH'       => "#{base_payment_url}/SearchTrade.idPass",
 
-  BASE_PAYMENT_URL = GmoPayment::Configurations::CONFIGURATIONS[:base_url] || 'https://pt01.mul-pay.jp/payment'
+      # Member API URL
+      'MEMBER_REGISTER'          => "#{base_payment_url}/SaveMember.idPass",
+      'MEMBER_UPDATE'            => "#{base_payment_url}/UpdateMember.idPass",
+      'MEMBER_SEARCH'            => "#{base_payment_url}/SearchMember.idPass",
+      'MEMBER_DELETE'            => "#{base_payment_url}/DeleteMember.idPass",
 
-  URLS = {
-    # Transaction API URL
-    'TRANSACTION_REGISTER'     => "#{BASE_PAYMENT_URL}/EntryTran.idPass",
-    'TRANSACTION_SUBMIT'       => "#{BASE_PAYMENT_URL}/ExecTran.idPass",
-    'TRANSACTION_UPDATE'       => "#{BASE_PAYMENT_URL}/AlterTran.idPass",
-    'TRANSACTION_MONEY_CHANGE' => "#{BASE_PAYMENT_URL}/ChangeTran.idPass",
-    'TRANSACTION_SEARCH'       => "#{BASE_PAYMENT_URL}/SearchTrade.idPass",
+      # Credit card API URL
+      'CARD_SAVE_AFTER_TRADED'   => "#{base_payment_url}/TradedCard.idPass",
+      'CARD_SAVE_OR_UPDATE'      => "#{base_payment_url}/SaveCard.idPass",
+      'CARD_SEARCH'              => "#{base_payment_url}/SearchCard.idPass",
+      'CARD_DELETE'              => "#{base_payment_url}/DeleteCard.idPass"
+    }
 
-    # Member API URL
-    'MEMBER_REGISTER'          => "#{BASE_PAYMENT_URL}/SaveMember.idPass",
-    'MEMBER_UPDATE'            => "#{BASE_PAYMENT_URL}/UpdateMember.idPass",
-    'MEMBER_SEARCH'            => "#{BASE_PAYMENT_URL}/SearchMember.idPass",
-    'MEMBER_DELETE'            => "#{BASE_PAYMENT_URL}/DeleteMember.idPass",
-
-    # Credit card API URL
-    'CARD_SAVE_AFTER_TRADED'   => "#{BASE_PAYMENT_URL}/TradedCard.idPass",
-    'CARD_SAVE_OR_UPDATE'      => "#{BASE_PAYMENT_URL}/SaveCard.idPass",
-    'CARD_SEARCH'              => "#{BASE_PAYMENT_URL}/SearchCard.idPass",
-    'CARD_DELETE'              => "#{BASE_PAYMENT_URL}/DeleteCard.idPass"
-  }
-
-  custom_urls = GmoPayment::Configurations::CONFIGURATIONS[:custom_urls] || {}
-  custom_urls.each { |k, v| URLS[k] = v }
+    custom_urls = GmoPayment::Configurations.all.fetch(:custom_urls, {})
+    urls.merge(custom_urls)
+  end
 end
