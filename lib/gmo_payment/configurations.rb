@@ -1,5 +1,3 @@
-module GmoPayment
-  class Configurations
-    CONFIGURATIONS = Rails.configuration.gmo_payment
-  end
+class GmoPayment::Configurations < Rails::Railtie
+  CONFIGURATIONS = {}
 end

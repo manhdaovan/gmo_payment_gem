@@ -1,11 +1,8 @@
-module GmoPayment
-  class Logger
-    DEFAULT_LOG_PATH = File.join(Rails.root, '/log/gmo_payment.log')
-    class << self
-      def write(msg)
-        File.open(DEFAULT_LOG_PATH, 'a+') do |f|
-          f.write("#{Time.now} :: #{msg} \n")
-        end
+class GmoPayment::Logger
+  class << self
+    def write(msg)
+      File.open(GmoPayment::Configurations::CONFIGURATIONS[:log_path], 'a+') do |f|
+        f.write("#{Time.now} :: #{msg} \n")
       end
     end
   end

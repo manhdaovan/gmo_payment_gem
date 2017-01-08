@@ -12,7 +12,7 @@ class GmoPayment
   attr_accessor :response_code, :response_body_raw, :api_url, :logger
   attr_reader :base_params, :time_out
 
-  def initialize(options={}, is_site = true)
+  def initialize(options={}, is_site = true, logger = nil)
     @base_params = if is_site
                      {
                        SiteID:   GmoPayment::Configurations::CONFIGURATIONS[:site_id],
@@ -25,31 +25,31 @@ class GmoPayment
                      }
                    end
     @time_out    = options[:time_out] || DEFAULT_TIME_OUT
-    @logger      = GmoPayment::Logger
+    @logger      = logger || GmoPayment::Logger
   end
 
   def register_member(options = {})
-    @api_url = GmoPayment::RequestUrls::URLS['MEMBER_REGISTER']
+    @api_url = GmoPayment::ApiUrls::URLS['MEMBER_REGISTER']
     call_api options
   end
 
   def delete_member(options = {})
-    @api_url = GmoPayment::RequestUrls::URLS['MEMBER_DELETE']
+    @api_url = GmoPayment::ApiUrls::URLS['MEMBER_DELETE']
     call_api options
   end
 
   def search_member(options = {})
-    @api_url = GmoPayment::RequestUrls::URLS['MEMBER_SEARCH']
+    @api_url = GmoPayment::ApiUrls::URLS['MEMBER_SEARCH']
     call_api options
   end
 
   def save_card(options={})
-    @api_url = GmoPayment::RequestUrls::URLS['CARD_SAVE_OR_UPDATE']
+    @api_url = GmoPayment::ApiUrls::URLS['CARD_SAVE_OR_UPDATE']
     call_api options
   end
 
   def delete_card(options={})
-    @api_url = GmoPayment::RequestUrls::URLS['CARD_DELETE']
+    @api_url = GmoPayment::ApiUrls::URLS['CARD_DELETE']
     call_api options
   end
 
@@ -57,22 +57,22 @@ class GmoPayment
   # Register > Submit with :JobCd = 'CAPTURE'
   # Register > Submit > Confirm with :JobCd != 'CAPTURE'
   def register_transaction(options={})
-    @api_url = GmoPayment::RequestUrls::URLS['TRANSACTION_REGISTER']
+    @api_url = GmoPayment::ApiUrls::URLS['TRANSACTION_REGISTER']
     call_api options
   end
 
   def submit_transaction(options={})
-    @api_url = GmoPayment::RequestUrls::URLS['TRANSACTION_SUBMIT']
+    @api_url = GmoPayment::ApiUrls::URLS['TRANSACTION_SUBMIT']
     call_api options
   end
 
   def confirm_transaction(options={})
-    @api_url = GmoPayment::RequestUrls::URLS['TRANSACTION_UPDATE']
+    @api_url = GmoPayment::ApiUrls::URLS['TRANSACTION_UPDATE']
     call_api options
   end
 
   def transaction_status(options={})
-    @api_url = GmoPayment::RequestUrls::URLS['TRANSACTION_SEARCH']
+    @api_url = GmoPayment::ApiUrls::URLS['TRANSACTION_SEARCH']
     call_api options
   end
 
@@ -110,19 +110,19 @@ class GmoPayment
     r_detail      = get_response_body
     pre_condition = OK_RESPONSE_CODE.include?(get_response_code) && !r_detail.key?(:ErrCode)
     case @api_url
-    when GmoPayment::RequestUrls::URLS['MEMBER_REGISTER'],
-      GmoPayment::RequestUrls::URLS['MEMBER_DELETE'],
-      GmoPayment::RequestUrls::URLS['MEMBER_SEARCH']
+    when GmoPayment::ApiUrls::URLS['MEMBER_REGISTER'],
+      GmoPayment::ApiUrls::URLS['MEMBER_DELETE'],
+      GmoPayment::ApiUrls::URLS['MEMBER_SEARCH']
       pre_condition && r_detail.key?(:MemberID)
-    when GmoPayment::RequestUrls::URLS['CARD_SAVE_OR_UPDATE']
+    when GmoPayment::ApiUrls::URLS['CARD_SAVE_OR_UPDATE']
       pre_condition && r_detail.key?(:CardSeq) && r_detail.key?(:CardNo)
-    when GmoPayment::RequestUrls::URLS['CARD_DELETE']
+    when GmoPayment::ApiUrls::URLS['CARD_DELETE']
       pre_condition && r_detail.key?(:CardSeq)
-    when GmoPayment::RequestUrls::URLS['TRANSACTION_REGISTER']
+    when GmoPayment::ApiUrls::URLS['TRANSACTION_REGISTER']
       pre_condition && r_detail.key?(:AccessID) && r_detail.key?(:AccessPass)
-    when GmoPayment::RequestUrls::URLS['TRANSACTION_SUBMIT']
+    when GmoPayment::ApiUrls::URLS['TRANSACTION_SUBMIT']
       pre_condition && r_detail.key?(:TranID) && r_detail.key?(:CheckString)
-    when GmoPayment::RequestUrls::URLS['TRANSACTION_UPDATE']
+    when GmoPayment::ApiUrls::URLS['TRANSACTION_UPDATE']
       pre_condition && r_detail.key?(:AccessID) && r_detail.key?(:AccessPass)
     else
       pre_condition
@@ -131,7 +131,7 @@ class GmoPayment
 
   private
 
-  def call_api(options={}, verb = 'POST')
+  def call_api(options={}, verb = 'post')
     fail("INVALID API URL with value: #{@api_url}") unless @api_url.length > 0
 
     options.merge!(@base_params)
@@ -139,7 +139,7 @@ class GmoPayment
     http           = init_http_request(base_url)
     begin
       http.start
-      response = if verb.upcase == 'post'
+      response = if verb.downcase == 'post'
                    http.post(path, to_query_params(options))
                  else
                    http.get(path, to_query_params(options))
@@ -175,6 +175,7 @@ class GmoPayment
   end
 
   def parse_response_content
+
     result = {}
     return result unless @response_body_raw && @response_body_raw.size > 0
     begin
@@ -201,13 +202,15 @@ class GmoPayment
   # Otherwise show last 4 characters
   def hide_value(param_n_value)
     param, value = param_n_value.split('=')
-    v_hide        = '*' * value.length
+    v_hide       = '*' * value.length
     v_hide << value[-3..-1] if value.length > 10
     "#{param}=#{v_hide}"
   end
 end
 
+require 'gmo_payment/railtie'
 require 'gmo_payment/configurations'
-require 'gmo_payment/request_urls'
+require 'gmo_payment/api_urls'
 require 'gmo_payment/api_errors'
 require 'gmo_payment/logger'
+
