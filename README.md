@@ -1,7 +1,7 @@
 # gmo_payment_gem
-[Github](https://github.com/manhdaovan/gmo_payment_gem)
-Unofficial wrapper for GMO Payment Gateway API
-Easy to make request to GMO Payment Gateway
+[Github](https://github.com/manhdaovan/gmo_payment_gem) <br/>
+Unofficial wrapper for GMO Payment Gateway API <br/>
+Easy to make request to GMO Payment Gateway <br/>
 
 ### Background
 * Need a simple scenario about payment,
