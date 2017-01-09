@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
-  s.name        = 'gmo_payment'
-  s.version     = '1.0.0'
+  s.name        = 'gmo_payment_gem'
+  s.version     = '0.0.1'
   s.platform    = Gem::Platform::RUBY
   s.author      = 'Manh Dao Van'
   s.email       = 'manhdaovan@gmail.com'
