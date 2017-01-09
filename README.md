@@ -66,15 +66,15 @@ if response.success?
 end
 ```
 * List `support_request`
-:register_member
-:delete_member
-:search_member
-:save_card
-:delete_card
-:register_transaction
-:submit_transaction
-:confirm_transaction
-:transaction_status
+:register_member<br/>
+:delete_member<br/>
+:search_member<br/>
+:save_card<br/>
+:delete_card<br/>
+:register_transaction<br/>
+:submit_transaction<br/>
+:confirm_transaction<br/>
+:transaction_status<br/>
 
 # Extend
 If you don't see what request you need in list `support_request`,
