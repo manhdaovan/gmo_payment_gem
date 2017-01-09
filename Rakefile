@@ -5,4 +5,4 @@ Rake::TestTask.new do |t|
 end
 
 desc 'Run tests for gmo_payment'
-task :default => :test
+task default: :test

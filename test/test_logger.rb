@@ -5,18 +5,18 @@ require 'helper'
 class TestLogger < Test::Unit::TestCase
   def test_write_log_success
     set_basic_config
-    log_msg = %q(this is a log)
+    log_msg = 'this is a log'
     GmoPayment::Logger.write(log_msg)
-    log_on_file = ''
+    log_on_file = false
     File.open(GmoPayment::Configurations.all.fetch(:log_path), 'r') do |f|
-      log_on_file = f.readline
+      f.each_line { |line| log_on_file = true if line.index(log_msg).to_i >= 0 }
     end
-    assert_equal(true, log_on_file.index(log_msg) >= 0)
+    assert_equal(true, log_on_file)
   end
 
   def test_log_path_not_found
     clear_config
-    log_msg = %q(this is a log)
+    log_msg = 'this is a log'
     begin
       GmoPayment::Logger.write(log_msg)
     rescue => e

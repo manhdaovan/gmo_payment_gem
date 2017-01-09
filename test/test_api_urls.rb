@@ -16,6 +16,6 @@ class TestApiUrls < Test::Unit::TestCase
       }
     }
     set_more_configs(more_urls)
-    assert_equal(13 + 2, GmoPayment::ApiUrls.all.size)
+    assert_equal(13 + 2, GmoPayment::ApiUrls.dup.all.size)
   end
 end

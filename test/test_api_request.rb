@@ -33,9 +33,9 @@ class TestApiRequest < Test::Unit::TestCase
       ShopPass: 'shop_pass',
       SiteID:   'site_id',
       SitePass: 'site_pass',
-      CardNo:   12345678901234
+      CardNo:   12_345_678_901_234
     }
-    expect_params = %q(ShopID=*******&ShopPass=*********&SiteID=*******&SitePass=*********&CardNo=**************234&)
+    expect_params = 'ShopID=*******&ShopPass=*********&SiteID=*******&SitePass=*********&CardNo=**************234&'
     timeout       = 30 # Seconds
     request       = GmoPayment::ApiRequest.new(url, params, timeout)
     assert_equal(expect_params, request.params2log)

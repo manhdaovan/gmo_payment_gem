@@ -20,7 +20,7 @@ class TestApiResponse < Test::Unit::TestCase
       something:     '123',
       somethingelse: '456'
     }
-    response           = GmoPayment::ApiResponse.new(payment_base_url, response_body, 200)
+    response = GmoPayment::ApiResponse.new(payment_base_url, response_body, 200)
     assert_equal(expect_parsed_body, response.response_body)
   end
 

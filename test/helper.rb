@@ -4,22 +4,22 @@ require 'gmo_payment/custom_error'
 require 'gmo_payment/configurations'
 
 def payment_base_url
-  %q(https://test-example.com/payment)
+  'https://test-example.com/payment'
 end
 
 def stub_request_to_payment(res_status = 200, res_body = '')
   stub_request(:any, /test-example.com\/payment/)
-    .with(:headers => {
+    .with(headers: {
             'Accept'          => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'User-Agent'      => 'Ruby'
           })
-    .to_return(:status => res_status, :body => res_body, :headers => {})
+    .to_return(status: res_status, body: res_body, headers: {})
 end
 
 def stub_request_to_timeout
   stub_request(:any, payment_base_url)
-    .with(:headers => {
+    .with(headers: {
             'Accept'          => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'User-Agent'      => 'Ruby'

@@ -1,6 +1,7 @@
 class GmoPayment::ApiErrors
   class << self
     attr_reader :errors
+    attr_accessor :all_errors
   end
   @errors = {
     # 本サービス決済センター・フロント側アプリケーションにて検知されたエラー
@@ -1335,8 +1336,14 @@ class GmoPayment::ApiErrors
   }.freeze
 
   def self.all
-    # Add more/overwrite error keys and messages from config
-    more_errors = GmoPayment::Configurations.all.fetch(:more_errors, {})
-    @errors.merge(more_errors)
+    if frozen?
+      all_errors
+    else
+      # Add more/overwrite error keys and messages from config
+      more_errors     = GmoPayment::Configurations.all.fetch(:more_errors, {})
+      self.all_errors = errors.merge(more_errors)
+      freeze
+      all_errors
+    end
   end
 end

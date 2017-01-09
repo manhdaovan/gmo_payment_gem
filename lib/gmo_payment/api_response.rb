@@ -1,7 +1,6 @@
 class GmoPayment::ApiResponse
-
-  RESPONSE_SUCCESS_CODE = [200, 201]
-  SPLIT_CHARACTER       = '|'
+  RESPONSE_SUCCESS_CODE = [200, 201].freeze
+  SPLIT_CHARACTER       = '|'.freeze
 
   def initialize(api_url, body, response_http_code)
     @api_url              = api_url
@@ -29,7 +28,9 @@ class GmoPayment::ApiResponse
   end
 
   def error_messages
-    error_infos.map { |e_code| GmoPayment::ApiErrors.all.fetch(e_code, "UNKNOWN ERROR with code #{e_code}") }
+    error_infos.map do |e_code|
+      GmoPayment::ApiErrors.all.fetch(e_code, "UNKNOWN ERROR with code #{e_code}")
+    end
   end
 
   def full_messages
@@ -79,7 +80,7 @@ class GmoPayment::ApiResponse
 
   def parse_response_content
     result = {}
-    return result unless @response_body && @response_body.size > 0
+    return result unless @response_body && !@response_body.empty?
     begin
       @response_body.split('&').each do |key_value|
         key, value         = key_value.split('=')
