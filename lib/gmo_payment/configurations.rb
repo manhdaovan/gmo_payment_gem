@@ -5,8 +5,8 @@ class GmoPayment::Configurations
   end
   @all = {}
 
-  def self.check_valid!
-    self.all.freeze
+  def self.check_valid!(changeable_on_runtime = false)
+    self.freeze unless changeable_on_runtime
     REQUIRED_CONFIG.each do |param|
       raise GmoPayment::CustomError.new("gmo_payment error: #{param} not set") if self.all.fetch(param, nil).nil?
     end

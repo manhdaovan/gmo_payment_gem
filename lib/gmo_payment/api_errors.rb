@@ -1336,7 +1336,7 @@ class GmoPayment::ApiErrors
 
   def self.all
     # Add more/overwrite error keys and messages from config
-    custom_errors = GmoPayment::Configurations.all.fetch(:custom_errors, {})
-    @errors.merge(custom_errors)
+    more_errors = GmoPayment::Configurations.all.fetch(:more_errors, {})
+    @errors.merge(more_errors)
   end
 end

@@ -5,13 +5,13 @@ require 'net/https'
 class GmoPayment::ApiRequest
 
   DEFAULT_TIMEOUT = 30 # Seconds
-  ENCODE_PARAMS    = %w(CardNo SiteID SitePass ShopID ShopPass)
+  ENCODE_PARAMS   = %w(CardNo SiteID SitePass ShopID ShopPass)
 
   def initialize(request_url, request_params, timeout)
-    @request_url = request_url
+    @request_url    = request_url
     @request_params = request_params
-    @time_out = timeout || DEFAULT_TIMEOUT
-    @requester = nil
+    @time_out       = timeout || DEFAULT_TIMEOUT
+    @requester      = nil
   end
 
   def make_request(method = 'post')

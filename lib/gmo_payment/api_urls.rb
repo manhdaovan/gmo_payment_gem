@@ -1,7 +1,7 @@
 class GmoPayment::ApiUrls
   def self.all
-    base_payment_url = GmoPayment::Configurations.all.fetch(:base_url, nil)
-    urls = {
+    base_payment_url = GmoPayment::Configurations.all.fetch(:base_url)
+    urls             = {
       # Transaction API URL
       'TRANSACTION_REGISTER'     => "#{base_payment_url}/EntryTran.idPass",
       'TRANSACTION_SUBMIT'       => "#{base_payment_url}/ExecTran.idPass",
@@ -22,7 +22,7 @@ class GmoPayment::ApiUrls
       'CARD_DELETE'              => "#{base_payment_url}/DeleteCard.idPass"
     }
 
-    custom_urls = GmoPayment::Configurations.all.fetch(:custom_urls, {})
-    urls.merge(custom_urls)
+    more_urls = GmoPayment::Configurations.all.fetch(:more_urls, {})
+    urls.merge(more_urls)
   end
 end

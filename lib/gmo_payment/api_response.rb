@@ -3,8 +3,6 @@ class GmoPayment::ApiResponse
   RESPONSE_SUCCESS_CODE = [200, 201]
   SPLIT_CHARACTER       = '|'
 
-  attr_reader :response_body, :response_http_code, :response_body_parsed
-
   def initialize(api_url, body, response_http_code)
     @api_url              = api_url
     @response_body        = body
@@ -16,17 +14,17 @@ class GmoPayment::ApiResponse
     @response_http_code
   end
 
-  def get_response_body(raw = false)
+  def response_body(raw = false)
     raw ? @response_body : @response_body_parsed
   end
 
   def error_codes
-    r_detail = get_response_body
+    r_detail = response_body
     r_detail.fetch(:ErrCode, '').split(SPLIT_CHARACTER)
   end
 
   def error_infos
-    r_detail = get_response_body
+    r_detail = response_body
     r_detail.fetch(:ErrInfo, '').split(SPLIT_CHARACTER)
   end
 
@@ -46,7 +44,7 @@ class GmoPayment::ApiResponse
     if block_given?
       yield(@api_url, @response_http_code, @response_body, @response_body_parsed)
     else
-      r_detail      = get_response_body
+      r_detail      = response_body
       pre_condition = RESPONSE_SUCCESS_CODE.include?(response_code) && !r_detail.key?(:ErrCode)
       case @api_url
       when GmoPayment::ApiUrls.all.fetch('MEMBER_REGISTER'),
@@ -69,8 +67,8 @@ class GmoPayment::ApiResponse
     end
   end
 
-  def response2log
-    get_response_body
+  def response2log(raw = false)
+    response_body(raw)
   end
 
   def full_errors2log

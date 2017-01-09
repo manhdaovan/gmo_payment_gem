@@ -74,7 +74,7 @@ class GmoPayment
       write_log("REQUEST PARAMS: ------ #{request.params2log}")
       response_raw = request.make_request(method)
       response     = GmoPayment::ApiResponse.new(api_url, response_raw.body, response_raw.code.to_i)
-      write_log("RESPONSE: ------------ #{response.response2log}")
+      write_log("RESPONSE: ------------ HTTP #{response.response_code}: #{response.response2log}")
       write_log("WITH ERRORS: --------- #{response.full_errors2log}")
       write_log(%Q(----------- END REQUEST TO GMO PAYMENT --------\n))
       response
