@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.author      = 'Manh Dao Van'
   s.email       = 'manhdaovan@gmail.com'
-  s.homepage    = 'https://manhdaovan.github.io/'
+  s.homepage    = 'https://github.com/manhdaovan/gmo_payment_gem/'
   s.summary     = 'Simple API wrapper for GMO Payment Gateway API request'
   s.description = 'Easy to make request to GMO Payment Gateway via API'
   s.license     = 'MIT'
