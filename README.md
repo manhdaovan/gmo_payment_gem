@@ -16,7 +16,9 @@ eg: Register member and credit card info, then execute monthly payment
 ### Configuration
 
 * For rails app:
-In `config/environments/env_file.rb` (Eg: `config/environments/development.rb`):
+ In `config/environment.rb`, insert: `require 'gmo_payment' unless defined?(GmoPayment)`
+ then in `config/environments/env_file.rb` (Eg: `config/environments/development.rb`):
+
 ```
    config.after_initialize do
        GmoPayment::Configurations.all = {
