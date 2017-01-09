@@ -8,7 +8,7 @@ def payment_base_url
 end
 
 def stub_request_to_payment(res_status = 200, res_body = '')
-  stub_request(:any, payment_base_url)
+  stub_request(:any, /test-example.com\/payment/)
     .with(:headers => {
             'Accept'          => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',

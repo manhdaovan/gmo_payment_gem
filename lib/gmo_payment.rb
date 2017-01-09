@@ -1,6 +1,6 @@
 class GmoPayment
-  def initialize(options={}, is_site = true, logger = nil)
-    @base_params = if is_site
+  def initialize(options = {}, type_site = true, logger = nil)
+    @base_params = if type_site
                      {
                        SiteID:   GmoPayment::Configurations.all.fetch(:site_id),
                        SitePass: GmoPayment::Configurations.all.fetch(:site_pass)
