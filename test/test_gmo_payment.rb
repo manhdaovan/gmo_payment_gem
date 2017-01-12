@@ -5,7 +5,7 @@ require 'helper'
 class TestGmoPayment < Test::Unit::TestCase
   def test_public_methods
     set_basic_config
-    gmo_payment = GmoPayment.new
+    gmo_payment = GmoPayment::Api.new
     api_methods = gmo_payment.public_methods(false)
     stub_request_to_payment
     api_methods.each do |api_call|
