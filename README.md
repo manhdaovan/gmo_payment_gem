@@ -56,6 +56,8 @@ then fill above config to where init your app.
 
 # Usage
 Wherever you need to execute a request to GMO Payment
+
+* For version 0.0.1
 ```
 # options = {}, type_site = true, logger = nil is default params
 gmo_payment = GmoPayment.new
@@ -67,6 +69,20 @@ if response.success?
   # Do your stuff here
 end
 ```
+
+* For version >= 0.0.2
+```
+# options = {}, type_site = true, logger = nil is default params
+gmo_payment = GmoPayment::Api.new
+# Prepare your params here
+params = {}
+#List support_request see as bellow
+response = gmo_payment.support_request(params)
+if response.success?
+  # Do your stuff here
+end
+```
+
 * List `support_request`
 :register_member<br/>
 :delete_member<br/>
@@ -107,6 +123,9 @@ Make sure all test cases are passed by command:
 # TODO
 * RDoc
 * validate request params base on each type of request
+
+# Changelog
+Please ref to [Changelog](./CHANGELOG.md)
 
 # License
 MIT.
