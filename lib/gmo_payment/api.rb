@@ -1,5 +1,8 @@
 module GmoPayment
   class Api
+
+    PREVENT_VARIABLES = [:@base_params].freeze
+
     def initialize(options = {}, type_site = true, logger = nil)
       @base_params = if type_site
                        {
@@ -62,6 +65,16 @@ module GmoPayment
     def transaction_status(params = {})
       api_url = GmoPayment::ApiUrls.all.fetch('TRANSACTION_SEARCH')
       call_api(api_url, params)
+    end
+
+    # Prevent inspection
+    def inspect
+      "#<GmoPayment::Api:#{object_id}>"
+    end
+
+    def instance_variable_get(*several_variants)
+      raise GmoPayment::CustomError.new('Not support this method') if PREVENT_VARIABLES.include?(several_variants[0])
+      super
     end
 
     protected
