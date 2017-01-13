@@ -1,6 +1,5 @@
 module GmoPayment
   class Api
-
     PREVENT_VARIABLES = [:@base_params].freeze
 
     def initialize(options = {}, type_site = true, logger = nil)
@@ -73,7 +72,7 @@ module GmoPayment
     end
 
     def instance_variable_get(*several_variants)
-      raise GmoPayment::CustomError.new('Not support this method') if PREVENT_VARIABLES.include?(several_variants[0])
+      raise GmoPayment::CustomError, 'Not support this method' if PREVENT_VARIABLES.include?(several_variants[0])
       super
     end
 
